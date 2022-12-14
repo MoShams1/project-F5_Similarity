@@ -90,7 +90,7 @@ ylabel('Percentage wrt MNs (%)')
 % title('task-dependent action type response per time bin')
 legend(h,{'Exe' 'Obs' 'Exe&Obs', 'ObsOnly'}, 'location', 'best')
 set(gca,'ytick',0:20:60)
-ylabel('Percentage of MNs (%)')
+ylabel('Percentage wrt MNs (%)')
 ylim([0 60])
 xlim([0 24])
 cleanplot

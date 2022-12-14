@@ -25,7 +25,7 @@ keepVars()
 plotkon(p_obsonly, p_obs, p_non,color,3)
 
 set(gca,'ytick',0:5:60)
-ylabel('Percentage of MNs (%)')
+ylabel('Percentage wrt MNs (%)')
 set(gca,'xtick',1:3,'XTickLabel',{'Dis','Pref', 'LDA'})
 xlim([.5 3.5])
 cleanplot
