@@ -39,7 +39,7 @@ figure('Units','normalized','OuterPosition',[.1 .1 .3 .2])
 subplot(1,3,1)
 Y = {DurationSec(idx_t1_info),DurationSec(idx_t1_noninfo),...
     DurationSec(idx_t2_info), DurationSec(idx_t2_noninfo)};
-fun_barplot_with_errorbar(Y)
+fun_barPlot(Y)
 % axis([0 5 0.1 0.6])
 xticks(1:4)
 xticklabels({'M1 informative' 'M1 noninformative' 'M2 informative' 'M2 noninformative'})
@@ -94,7 +94,7 @@ mean_info_shift_m2 = mean(DurationSec(idx_m2_shift));
 subplot(1,3,2)
 Y = {DurationSec(idx_m1_lift),DurationSec(idx_m1_twist),DurationSec(idx_m1_shift),...
     DurationSec(idx_m2_lift),DurationSec(idx_m2_twist),DurationSec(idx_m2_shift)};
-fun_barplot_with_errorbar(Y)
+fun_barPlot(Y)
 xticks(1:6)
 xticklabels({'M1 lift' 'M1 twist' 'M1 shift' 'M2 lift' 'M2 twist' 'M2 shift'})
 xlabel('Monkey and action type')
@@ -144,7 +144,7 @@ mean_info_shift_m1 = mean(DurationSec(idx_m1_shift));
 %% figure of 95% confidence intervals of mean
 subplot(1,3,3)
 Y = {DurationSec(idx_m1_lift),DurationSec(idx_m1_twist),DurationSec(idx_m1_shift)};
-fun_barplot_with_errorbar(Y)
+fun_barPlot(Y)
 % axis([0 4 0.25 0.35])
 xticks(1:3)
 xticklabels({'Lift' 'Twist' 'Shift'})
