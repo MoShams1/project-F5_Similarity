@@ -1,6 +1,6 @@
 % To plot a bar plot with errorbards indicating 95% confidence intervals
 % calculate the
-function fun_barPlot(A)
+function plotBar(A)
 % A: cell or mat (repetition x category), comma separated!
 
 if isnumeric(A)

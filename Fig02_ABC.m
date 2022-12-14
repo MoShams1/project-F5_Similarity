@@ -106,7 +106,7 @@ w = 0:250:T_before+T_after; % in samples
 c = lines(7);
 cmap = [c(7,:);c(1,:);c(5,:)];
 ax2 = subplot(4,1,kk*2+2);
-fun_raster_many(FR_b,cmap,1)
+plotRaster(FR_b,cmap,1)
 add_events(t_b,T_before)
 set(gca,'xtick',w,'xticklabel',(w-T_before).*2/1000)
 ylabel('Trials')
@@ -118,7 +118,7 @@ ax1 = subplot(4,1,kk*2+1);
 hold on
 for iblock = 1:3
     FR = raster2fr(FR_b{iblock},kstd)*500;
-    plot3line(FR,cmap(iblock,:),1,kstd);
+    plot3line([],FR,cmap(iblock,:),1,kstd);
 end
 set(gca,'xtick',w,'xticklabel',(w-T_before).*2/1000)
 set(gca,'xcolor','none')

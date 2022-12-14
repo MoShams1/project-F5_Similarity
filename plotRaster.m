@@ -8,7 +8,7 @@
 % C: color map (color x RGB; default = black)
 % sz: dot size (default = 10)
 
-function fun_raster_many(M,C,sz)
+function plotRaster(M,C,sz)
 switch nargin
     case 1
         C = lines(7);
@@ -24,9 +24,6 @@ for iblock = 1:numel(M)
     [y, x] = find(N);
     y = y+offset;
     
-%     plot(x,y,'MarkerSize',sz,'Marker','.','LineStyle','none',...
-%         'Color',C(iblock,:),'alpha',.5);
-
     scatter(x,y,sz,C(iblock,:), 'MarkerEdgeAlpha',.8);
     hold on
     
