@@ -36,9 +36,9 @@ end
 
 hold on
 if ~marker
-    h = plot(x,m,'color',color,'linewidth',2);
+    h = plot(x,m,'color',color,'linewidth',1);
 elseif marker
-    h = plot(x,m,'color',color,'linewidth',2,...
+    h = plot(x,m,'color',color,'linewidth',1,...
         'marker','o','markersize',sz,...
         'markerfacecolor',color,'MarkerEdgeColor','none');
 end

@@ -17,11 +17,7 @@ color_exe = [.2 .2 .6];
 color_obs = [.3 .6 .3];
 color_obs_only = [.6 .6 .6];
 % color_exeobs = [.6 .3 .6];
-color_exeobs = [.9 .6 0];
-
-save_fig = 'off';
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+color_exeobs = [.9 .7 .3];
 
 %% load data
 load (filename_p_values)
@@ -65,7 +61,7 @@ n_sig_obs_only = sum(sig_obs) - sum(sig_exeobs);
 % save ('n_sig.mat', 'n_sig_exe', 'n_sig_obs',  'n_sig_exeobs', 'n_sig_obs_only')
 
 %% figure
-figure('Units','normalized','OuterPosition',[.1 .1 .11 .2])
+figure('Units','normalized','OuterPosition',[.1 .1 .09 .2])
 hold on
 h = [];
 x = (1:24)-.5;
@@ -88,13 +84,9 @@ set(gca,'XTick',0:4:25,'XTickLabel',...
     {'BPR','LED','REL','TCH','HLD','REW','WDR'})
 ylabel('Percentage wrt MNs (%)')
 % title('task-dependent action type response per time bin')
-legend(h,{'Exe' 'Obs' 'Exe&Obs', 'ObsOnly'}, 'location', 'best')
+legend(h,{'Exe' 'Obs' 'Exe & Obs', 'Obs only'}, 'location', 'best')
 set(gca,'ytick',0:20:60)
 ylabel('Percentage wrt MNs (%)')
 ylim([0 60])
 xlim([0 24])
 cleanplot
-
-if strcmp(save_fig, 'on')
-    saveas(gcf,'Fig_3A_timecourse.png','png')
-end

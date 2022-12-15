@@ -24,7 +24,10 @@ for iblock = 1:numel(M)
     [y, x] = find(N);
     y = y+offset;
     
-    scatter(x,y,sz,C(iblock,:), 'MarkerEdgeAlpha',.8);
+    scatter(x,y,sz,C(iblock,:),...
+        'MarkerFaceColor',C(iblock,:),...
+        'Markeredgecolor','none',...
+        'MarkerFaceAlpha',.4);
     hold on
     
     offset = offset + size(N,1);

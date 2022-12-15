@@ -7,15 +7,15 @@ close all
 monkey = '1';
 
 % select a neuron ID
-ID = '2015_02_10_S2_T4';  % elife 2nd submission (Fig2A)
+% ID = '2015_02_10_S2_T4';  % elife 2nd submission (Fig2A)
 % ID = '2014_07_09_S1_T4';  % elife 2nd submission (Fig2B)
-% ID = '2014_06_13_S2_T4';  % elife 2nd submission (Fig2C)
+ID = '2014_06_13_S2_T4';  % elife 2nd submission (Fig2C)
 
 % ID = '2014_08_30_S2_T4';
 % ID = '2014_06_15_S2_T4';
 % ID = '2014_06_15_S3_T4';
 
-figure('Units','normalized','OuterPosition',[.1 .1 .11 .6])
+figure('Units','normalized','OuterPosition',[.1 .1 .08 .45])
 % plot execution task
 load(['S001_M',monkey,'_info'], 'minfoID', 'mevent', 'mcnd')
 infoID = minfoID;
@@ -110,6 +110,7 @@ plotRaster(FR_b,cmap,1)
 add_events(t_b,T_before)
 set(gca,'xtick',w,'xticklabel',(w-T_before).*2/1000)
 ylabel('Trials')
+set(gca,'ytick',0:50:200)
 xlabel('Time from touch (sec)')
 cleanplot
 % plot PSTH
@@ -123,8 +124,9 @@ end
 set(gca,'xtick',w,'xticklabel',(w-T_before).*2/1000)
 set(gca,'xcolor','none')
 ylim([0 80])
+set(gca,'ytick',0:20:80)
 xlim([w(1) w(end)])
-ylabel('Discharge rate (spks/s)')
+ylabel({'Discharge rate','(spks/s)'})
 cleanplot
 linkaxes([ax1, ax2],'x')
 end
@@ -138,11 +140,10 @@ ntrials = size(t_mat,1);
 y = 1:ntrials;
 for ifield = [1 2 4 5]
     x = t_mat(:,ifield)-t_mat(:,3)+T_before;
-%     rnd_vec = round(linspace(1,ntrials,.2*ntrials)); % draw events on a subset of trials
     rnd_vec = round(linspace(1,ntrials,20)); % draw events on a subset of trials
     y_sub = y(rnd_vec);
     x_sub = x(rnd_vec);
     plot(x_sub,y_sub,'color',[.2 .2 .2],'linestyle','none',...
-        'marker',mark_vector{ifield},'markersize',6)
+        'marker',mark_vector{ifield},'markersize',5)
 end
 end

@@ -9,7 +9,7 @@ color(2,:) = [.6 .6 .6];
 color(3,:) = [.6 .3 .6];
 color(4,:) = c(2,:);
 
-figure('Units','normalized','OuterPosition',[.1 .1 .11 .2])
+figure('Units','normalized','OuterPosition',[.1 .1 .05 .2])
 hold on
 
 [p_matched,p_non,p_obs,p_obsonly] = prepare_for_barplot('discharge');

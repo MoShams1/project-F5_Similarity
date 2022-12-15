@@ -4,7 +4,7 @@ clc
 close all
 clear
 
-figure('Units','normalized','OuterPosition',[.1 .1 .07 .2])
+figure('Units','normalized','OuterPosition',[.1 .1 .05 .2])
 hold on
 
 [perc(1), CI(:,1)] = prep4cibra('discharge');
@@ -23,7 +23,7 @@ plot(1:3,perc,'color','k','linewidth',2,'LineStyle','none',...
 set(gca,'xtick',1:3,'XTickLabel',{'Dis','Pref', 'LDA'})
 xlim([.5 3.5])
 set(gca,'ytick',0:4)
-ylabel('Percentage of matched bins wrt all bins (%)')
+ylabel({'Percentage of matched bins','wrt all bins (%)'})
 cleanplot
 
 
