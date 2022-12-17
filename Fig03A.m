@@ -16,7 +16,6 @@ line_color = [0.5 0.5 0.5];
 color_exe = [.2 .2 .6];
 color_obs = [.3 .6 .3];
 color_obs_only = [.6 .6 .6];
-% color_exeobs = [.6 .3 .6];
 color_exeobs = [.9 .7 .3];
 
 %% load data
