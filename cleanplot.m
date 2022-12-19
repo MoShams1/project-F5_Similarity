@@ -14,5 +14,4 @@ ax = gca;
 if ~isempty(ax.Legend)
     legend boxoff
 end
-set(gca,'FontName','Helvetica','FontSize',8)
-set(gca,'DefaultTextFontName','Helvetica','DefaultTextFontSize',8)
+fontsize(gca,8,"points")

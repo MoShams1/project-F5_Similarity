@@ -89,9 +89,9 @@ line(h.XData(:),h.YData(:),'color','k','LineWidth',1)
 slope = (h.YData(2) - h.YData(1)) / (h.XData(2) - h.XData(1));
 display(atand(slope))
  
-%% add exemplary neurons
+%% add selected bins
 plotit(all_o2o_vector(idx_e2o_sig), all_e2o_vector(idx_e2o_sig),...
-    sz,1,c(2,:),1)
+    sz,.8,c(2,:),0)
 
 %% functions
 function plotit(A,B,sz,alpha,color,out)

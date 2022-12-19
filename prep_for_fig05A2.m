@@ -1,21 +1,16 @@
 
-
-clear
-close all
 clc
+clear
 
 %% settings
-type_of_method = 'action_preference'; % options: discharge, action_preference, LDA
+type_of_method = 'LDA'; % options: discharge, action_preference, LDA
 filename_p_values = 'p_kruskalwallis_per_bin_and_neuron';
 c = lines(7);
-marker_size = 6;
-font_size = 7;
+marker_size = 4;
 line_color = [0.5 0.5 0.5];
 color_obs_only = [.7 .7 .7];
 color_match = c(2,:);
 color_nonmatch = 'k';
-
-save_fig = 'off';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% load p-values (if actions are discriminated at all)
@@ -61,33 +56,53 @@ neuron_label = neurons_sorted(:,n_bins*2+5);
 neurons_sorted(:,[n_bins*2+1, n_bins*2+2, n_bins*2+3, n_bins*2+4, n_bins*2+5]) = [];
 
 %% create the figure
-figure(1)
-clf
+% figure('Units','normalized','OuterPosition',[.1 .1 .07 1])
 cnt = 0;
+cleanplot
 for each_neuron = 1:n_neurons
     sig_idx_obs = find(neurons_sorted(each_neuron, 1 : n_bins) == 1);
     sig_idx_1 = find(neurons_sorted(each_neuron, n_bins+1 : 2*n_bins) == 1);
     sig_idx_m1 = find(neurons_sorted(each_neuron, n_bins+1 : 2*n_bins) == -1);
     if ~isempty(sig_idx_obs)
         cnt = cnt + 1;
-        plot(sig_idx_obs, cnt,'ko','markersize',marker_size, 'MarkerFaceColor', color_obs_only) % should be partly overwritten by red or black later
+        plot(sig_idx_obs, cnt,'ko','markersize',marker_size,...
+            'MarkerFaceColor', color_obs_only) % should be partly overwritten by red or black later
         if ~isempty(sig_idx_1)
-            plot(sig_idx_1, cnt,'ko','markersize',marker_size, 'MarkerFaceColor', color_match);
+            plot(sig_idx_1, cnt,'ko','markersize',marker_size,...
+                'MarkerFaceColor', color_match);
             hold on
         end
         if ~isempty(sig_idx_m1)
-            plot(sig_idx_m1, cnt,'ko','markersize',marker_size, 'MarkerFaceColor', color_nonmatch);
+            plot(sig_idx_m1, cnt,'ko','markersize',marker_size,...
+                'MarkerFaceColor', color_nonmatch);
             hold on
         end
-        text(-3, cnt, num2str(neuron_label(each_neuron)),'fontsize',font_size)
+        text(-1, cnt, num2str(neuron_label(each_neuron)),...
+            'HorizontalAlignment','right')
     end
 end
-axis([-4 n_bins+1, 0, cnt+1])
-line([0.5 0.5], get(gca,'ylim'), 'color', line_color)
-line([4.5 4.5], get(gca,'ylim'), 'color', line_color)
-line([8.5 8.5], get(gca,'ylim'), 'color', line_color)
+axis([-4 n_bins+1, 1, cnt+1])
+xlim([-4 12.5])
+title(type_of_method)
+set(gca,'XTick',(0:4:12)+.5,'XTickLabel',...
+    {'REL','TCH','HLD','REW'})
+fill([.5 .5 4.5 4.5],[2 129 129 2], 'k',...
+    'EdgeColor','none','FaceAlpha',.1)
+fill([.5 .5 4.5 4.5]+8,[2 129 129 2], 'k',...
+    'EdgeColor','none','FaceAlpha',.1)
+set(gca,'YColor','none')
+% line([0 0]+.5, get(gca,'ylim'), 'color', line_color)
+% line([1 1]+.5, get(gca,'ylim'), 'color', line_color)
+% line([8.5 8.5], get(gca,'ylim'), 'color', line_color)
+cleanplot2
 
-set(gcf, 'position', [239 10 257 967])
-if strcmp(save_fig, 'on')
-    saveas(gcf,['Figures/' type_of_method '_Fig_5A_rasterplot.png'],'png')
+function cleanplot2
+set(gca,'tickdir','out','color','none')
+box off
+ax = gca;
+if ~isempty(ax.Legend)
+    legend boxoff
+end
+fontsize(gca,6,"points")
+set(gca,'FontSize',8)
 end

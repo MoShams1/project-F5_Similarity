@@ -16,8 +16,9 @@ for i = 1:3
         'linewidth',3)
 end
 
+c = lines(7);
 plot(1:3,perc,'color','k','linewidth',2,'LineStyle','none',...
-    'marker','o','markerfacecolor','k',...
+    'marker','o','markerfacecolor',c(2,:),...
     'markeredgecolor','none','MarkerSize',5)
 
 set(gca,'xtick',1:3,'XTickLabel',{'Dis','Pref', 'LDA'})
