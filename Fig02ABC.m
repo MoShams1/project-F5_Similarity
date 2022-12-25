@@ -7,9 +7,9 @@ close all
 monkey = '1';
 
 % select a neuron ID
-% ID = '2015_02_10_S2_T4';  % elife 2nd submission (Fig2A)
+ID = '2015_02_10_S2_T4';  % elife 2nd submission (Fig2A)
 % ID = '2014_07_09_S1_T4';  % elife 2nd submission (Fig2B)
-ID = '2014_06_13_S2_T4';  % elife 2nd submission (Fig2C)
+% ID = '2014_06_13_S2_T4';  % elife 2nd submission (Fig2C)
 
 % ID = '2014_08_30_S2_T4';
 % ID = '2014_06_15_S2_T4';
@@ -28,7 +28,7 @@ neuron = mneuron;
 neuronID = mneuronID;
 ind_valid_trials = mind_valid_neurons;
 clear mneurons mneuronID mind_valid_neurons
-plot_kon(infoID,event,cnd, neuron,neuronID,ind_valid_trials, ID, 0);
+plotit(infoID,event,cnd, neuron,neuronID,ind_valid_trials, ID, 0);
 % plot observation task
 load(['S001_M',monkey,'_info'], 'vinfoID', 'vevent', 'vcnd')
 infoID = vinfoID;
@@ -41,9 +41,9 @@ neuron = vneuron;
 neuronID = vneuronID;
 ind_valid_trials = vind_valid_neurons;
 clear mneurons mneuronID mind_valid_neurons
-plot_kon(infoID,event,cnd, neuron,neuronID,ind_valid_trials, ID, 1);
-% ============================================================================== functions
-function plot_kon(infoID, event, cnd, neuron, neuronID, ind_valid_trials, ID, kk)
+plotit(infoID,event,cnd, neuron,neuronID,ind_valid_trials, ID, 1);
+% ================================================================== functions
+function plotit(infoID, event, cnd, neuron, neuronID, ind_valid_trials, ID, kk)
 i_neuron = find(strcmp(ID,neuronID));
 i_info = find(strcmp(ID(1:end-3),infoID));
 % remove invalid trials
@@ -111,7 +111,12 @@ add_events(t_b,T_before)
 set(gca,'xtick',w,'xticklabel',(w-T_before).*2/1000)
 ylabel('Trials')
 set(gca,'ytick',0:50:200)
-xlabel('Time from touch (sec)')
+if kk
+    xlabel('Time from touch (sec)')
+end
+yrange = ylim;
+ylim([0 yrange(2)+10])
+xlim([w(1)-50 w(end)])
 cleanplot
 % plot PSTH
 kstd = 12; % std of the smoothing kernel in samples
@@ -123,14 +128,15 @@ for iblock = 1:3
 end
 set(gca,'xtick',w,'xticklabel',(w-T_before).*2/1000)
 set(gca,'xcolor','none')
-ylim([0 80])
-set(gca,'ytick',0:20:80)
-xlim([w(1) w(end)])
+set(gca,'ytick',0:40:80)
 ylabel({'Discharge rate','(spks/s)'})
+ylim([0 80])
+xlim([w(1)-50 w(end)])
+pbaspect([1,.4,1])
 cleanplot
 linkaxes([ax1, ax2],'x')
 end
-% ---------------------------------------------------------------------------------------
+% ---------------------------------------------------------------------------
 function add_events(t,T_before)
 rng('default')
 mark_vector = {'s','^',[],'o','*'};

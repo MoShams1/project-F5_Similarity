@@ -2,7 +2,8 @@
 
 %% calculate the mean angle of the right most cluster
 
-c = lines(7);
+cmap = parula(11+1);
+cmap = cmap .* repmat([.9 .8 .9],size(cmap,1),1);
 
 thresh = 10;
 
@@ -23,13 +24,12 @@ binsize = edges(2)-edges(1);
 edges = mean(edges([1 2])):binsize:edges(end);
     
 % Set up fittype and options.
-ft = fittype( 'gauss2' );
+ft = fittype( 'gauss1' );
 opts = fitoptions( 'Method', 'NonlinearLeastSquares' );
 % Fit model to data.
 [fitresult, gof, out] = fit( edges', count', ft, opts);
 
-adjr2 = gof.adjrsquare;
-display(adjr2)
+disp(['Gauss1 adjR2: ', num2str(gof.adjrsquare)])
 
 xx = -90:.1:90;
 yy = feval(fitresult,xx);
@@ -37,21 +37,13 @@ yy = feval(fitresult,xx);
 h = histogram(angle,-90:binsize:90);
 h.FaceAlpha = 1;
 h.FaceColor = [.5 .5 .5];
-set(gca,'YTick',0:10:100)
+set(gca,'YTick',0:20:100)
 cleanhist(h)
 
 hold on
-plot(xx,yy,'color',c(3,:),'linewidth',2)
+plot(xx,yy,'color',cmap(6,:),'linewidth',2)
 set(gca,'xtick',-90:45:90)
-xlim([-90 90])
-xlabel('Angle (deg)')
-ylabel('Count')
-
-% find the local minimum
-[pp,ipp] = findpeaks(yy);
-[~,idmin] = min(yy(ipp(1):ipp(2)));
-boundary = xx(ipp(1)+idmin);
-% line([boundary boundary],[0 40],'color','r')
-display(boundary)
-
-pbaspect([1 .4 1])
+xlim([-90-5 90])
+ylim([-2 40])
+ylabel('Bin count')
+pbaspect([1 .5 1])

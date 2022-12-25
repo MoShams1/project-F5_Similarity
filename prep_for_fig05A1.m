@@ -81,7 +81,7 @@ for each_neuron = 1:n_neurons
     end
 end
 ylabel('Neurons')
-title(type_of_method)
+title('Action preference')
 axis([-4 n_bins+1, 1, cnt+1])
 xlim([-4 12.5])
 set(gca,'XTick',(0:4:12)+.5,'XTickLabel',...
@@ -90,10 +90,8 @@ fill([.5 .5 4.5 4.5],[2 129 129 2], 'k',...
     'EdgeColor','none','FaceAlpha',.1)
 fill([.5 .5 4.5 4.5]+8,[2 129 129 2], 'k',...
     'EdgeColor','none','FaceAlpha',.1)
-% line([0 0]+.5, get(gca,'ylim'), 'color', line_color)
-% line([1 1]+.5, get(gca,'ylim'), 'color', line_color)
-% line([8.5 8.5], get(gca,'ylim'), 'color', line_color)
 cleanplot2
+
 
 function cleanplot2
 set(gca,'tickdir','out','color','none')

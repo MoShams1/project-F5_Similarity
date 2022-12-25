@@ -22,15 +22,16 @@ plot(1:3,perc,'color','k','linewidth',2,'LineStyle','none',...
     'markeredgecolor','none','MarkerSize',5)
 
 set(gca,'xtick',1:3,'XTickLabel',{'Dis','Pref', 'LDA'})
-xlim([.5 3.5])
-set(gca,'ytick',0:5:25)
-ylabel({'Percentage of MNs with','at least one matched bin (%)'})
+xlim([.4 3.5])
+ylim([-.2 4])
+set(gca,'ytick',0:4)
+ylabel({'Percentage of matched bins','wrt all bins (%)'})
 cleanplot
 
 
 
 function [perc, CI] = prep4cibra(type_of_method)
-%% load data
+% load data
 filename_same_or_diff_Csibra = ['same_or_diff_' type_of_method '_Csibra'];
 load(filename_same_or_diff_Csibra)
 same_diff_perm = same_or_diff; clear same_or_diff
@@ -39,29 +40,23 @@ filename_same_or_diff = ['same_or_diff_' type_of_method];
 load(filename_same_or_diff)
 same_diff = same_or_diff; clear same_or_diff
 
-%% preparation
+% preparation
 n_neurons = size(same_diff,1);
 n_bins = size(same_diff,2);
 n_perms = size(same_diff_perm,3);
+n_total_bins = n_neurons * n_bins; 
 
-%% calculate the percentage of MNs with at least one matched bin
-n_matched_bins_per_neuron = NaN(n_neurons,1);
-for each_neuron = 1:n_neurons
-    n_matched_bins_per_neuron(each_neuron,1) = length(find(same_diff(each_neuron,:) == 1));
-end
-n_at_least_one_matched_bin = length(find(n_matched_bins_per_neuron >= 1))
-perc = n_at_least_one_matched_bin / n_neurons * 100
+% percentage of matched bins wrt n_total_bins
+n_matched_bins = length(find(same_diff == 1));
+perc = n_matched_bins/n_total_bins * 100;
 
-%% calculate the CI of percentage of MNs with at least one matched bin
-n_matched_bins_per_neuron_perm = NaN(n_neurons, n_perms);
-for each_neuron = 1:n_neurons
+% calculate the CI of percentage of matched bins wrt n_total_bins
+perc_matched_bins_perm = NaN(n_perms,1);
+for each_bin = 1:n_bins
     for each_perm = 1:n_perms
-        n_matched_bins_per_neuron_perm(each_neuron,each_perm) = length(find(same_diff_perm(each_neuron,:,each_perm) == 1));
+        n_matched_bins_perm = length(find(same_diff_perm(:,:,each_perm) == 1));
+        perc_matched_bins_perm(each_perm,1) = n_matched_bins_perm/n_total_bins * 100;
     end
 end
-perc_at_least_one_matched_bin_perm = NaN(1, n_perms);
-for each_perm = 1:n_perms
-    perc_at_least_one_matched_bin_perm(1,each_perm) = length(find(n_matched_bins_per_neuron_perm(:,each_perm) >= 1)) / n_neurons * 100;
-end
-CI(:,1) = prctile(perc_at_least_one_matched_bin_perm, [2.5 97.5]);
+CI = prctile(perc_matched_bins_perm, [2.5 97.5]);
 end

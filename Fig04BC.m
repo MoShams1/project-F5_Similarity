@@ -22,14 +22,14 @@ obs2obs(:,[1:8,21:24]) = [];
 % plot
 figure('Units','normalized','OuterPosition',[.1 .1 .13 .4])
 subplot(3,2,1)
-prep_for_fig04B
+prep_for_fig04B1
 
 clearvars -except obs2obs exe2obs
 subplot(3,2,2)
-prep_for_fig04E
+prep_for_fig04C1
 
 clearvars -except obs2obs exe2obs
-prep_for_fig04CD
+prep_for_fig04B2B3
 
 clearvars -except obs2obs exe2obs
-prep_for_fig04FG
+prep_for_fig04C2C3

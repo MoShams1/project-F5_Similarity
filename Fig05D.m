@@ -3,8 +3,13 @@ close all
 clc
 
 figure('Units','normalized','OuterPosition',[.1 .1 .08 .2])
-prep4fig5D('action_preference',0)
-prep4fig5D('LDA',1)
+
+isubplot = 0;
+prep4fig5D('action_preference',isubplot)
+
+isubplot = 1;
+prep4fig5D('LDA',isubplot)
+
 
 function prep4fig5D(type_of_method,isubplot)
 %% settings
@@ -113,7 +118,6 @@ end
 assert(cnt_start == n_match + n_nonmatch)
 
 %% figure
-
 subplot(2,2,2*isubplot+1)
 [h1,~] = histcounts(y_start(x==1), 0:12,'normalization', 'probability');
 [h2,~] = histcounts(y_start(x==2), 0:12,'normalization', 'probability');
@@ -126,9 +130,12 @@ plot(xx, h2,'-o', 'color', color_nonmatch,'MarkerEdgeColor',...
     color_nonmatch, 'MarkerFaceColor', color_nonmatch,...
     'MarkerSize', marker_size,'linewidth',line_width);
 axis([0 n_bins+1, get(gca,'ylim')])
-xticks(0:4:12)
+set(gca,'xtick',(0:4:12),'XTicklabel',{'REL','TCH','HLD','REW'})
 yticks(0:.1:.5)
-ylim([0 .3])
+ymax = .3;
+ylim([-ymax/10/2 ymax])
+xlim([-1 12])
+add_shades(ymax)
 ylabel('Relative frequency')
 xlabel('Starting bin')
 cleanplot
@@ -145,10 +152,23 @@ plot(xx, h2,'-o', 'color', color_nonmatch,'MarkerEdgeColor',...
     color_nonmatch, 'MarkerFaceColor', color_nonmatch,...
     'MarkerSize', marker_size,'linewidth',line_width);
 axis([0 n_bins+1, get(gca,'ylim')])
-xticks(0:4:12)
+set(gca,'xtick',(0:4:12),'XTicklabel',{'REL','TCH','HLD','REW'})
 yticks(0:.2:.8)
-ylim([0 .8])
+ymax = .8;
+ylim([-ymax/10/2 ymax])
+xlim([-1 12])
+add_shades(ymax)
 ylabel('Relative frequency')
 xlabel('Duration (bins)')
 cleanplot
+end
+
+
+function add_shades(ymax)
+onsets = 0:8:12;
+ymin = 0;
+for t = onsets
+    fill([t t t+4 t+4],[ymin ymax ymax ymin],...
+        'k','EdgeColor','none','FaceAlpha',.1)
+end
 end

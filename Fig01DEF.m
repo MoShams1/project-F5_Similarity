@@ -6,8 +6,6 @@ clc
 filename_exe = 'behavioral_data_exe'; % these are duration data of all valid trials of the sessions in which mirror neurons were recorded (177 MN)
 filename_obs = 'behavioral_data_obs';
 
-save_fig = 'off';
-
 % load data
 load (filename_exe)
 
@@ -52,9 +50,6 @@ text(2, min(get(gca,'ylim')) + y_text, num2str(length(idx_t1_noninfo)))
 text(3, min(get(gca,'ylim')) + y_text, num2str(length(idx_t2_info)))
 text(4, min(get(gca,'ylim')) + y_text, num2str(length(idx_t2_noninfo)))
 set(gca,'ytick',0:.1:1)
-if strcmp(save_fig,'on')
-    saveas(gcf,'Fig_1_informative_vs_noninformative_cue_manipulation.png','png')
-end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Figure 2: effect of informative cue on approach (reaching), measured as duration of reaching, done for each monkey separately
 % monkey 1
@@ -106,10 +101,6 @@ text(4, min(get(gca,'ylim')) + y_text, num2str(length(idx_m2_lift)))
 text(5, min(get(gca,'ylim')) + y_text, num2str(length(idx_m2_twist)))
 text(6, min(get(gca,'ylim')) + y_text, num2str(length(idx_m2_shift)))
 set(gca,'ytick',0:.025:1)
-if strcmp(save_fig,'on')
-    saveas(gcf,'Fig_1_cue_dependent_approach.png','png')
-end
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Figure 3: effect of informative cue on approach (reaching), measured as duration of reaching, done for human (both monkeys pooled)
 clear ActionType
@@ -147,6 +138,3 @@ text(1, min(get(gca,'ylim')) + y_text, [num2str(length(idx_m1_lift))])
 text(2, min(get(gca,'ylim')) + y_text, num2str(length(idx_m1_twist)))
 text(3, min(get(gca,'ylim')) + y_text, num2str(length(idx_m1_shift)))
 set(gca,'ytick',0:.025:1)
-if strcmp(save_fig,'on')
-    saveas(gcf,'Fig_1_cue_dependent_approach_HUMAN.png','png')
-end

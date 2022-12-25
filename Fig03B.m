@@ -1,74 +1,96 @@
 
+
 clear
 close all
 clc
 
+%% changes: total number of obs segments calculated
+
+% settings
+filename_p_values = 'p_kruskalwallis_per_bin_and_neuron';
+marker_size = 5;
+line_width = 2;
+histo_width = 0.2;
 c = lines(7);
-color(1,:) = [0 0 0];
-color(2,:) = [.6 .6 .6];
-color(3,:) = [.6 .3 .6];
-color(4,:) = c(2,:);
+line_color = [0.5 0.5 0.5];
+color_exe = [.2 .2 .6];
+color_obs = [.3 .6 .3];
+color_obs_only = [.6 .6 .6];
+color_exeobs = [.9 .7 .3];
 
-figure('Units','normalized','OuterPosition',[.1 .1 .05 .2])
+%% load data
+load (filename_p_values)
+
+%% preparation
+n_neurons = size(data.ID,1);
+n_bins = 24;
+
+sig_exe = data.sig_exe;
+sig_obs = data.sig_obs;
+sig_exeobs = data.sig_exeobs;
+sig_obs_only = sig_obs - sig_exeobs;
+
+%% bin counts in the period between bins 9 to 20
+n_total_bins = n_neurons * length(9:20) 
+n_obs_bins = length(find(sig_obs(:,9:20) == 1))
+n_exeobs_bins = length(find(sig_exeobs(:,9:20) == 1))
+
+%% neuron count with at least one bin of a certain kind (in the period between bins 9 to 20)
+n_bins_per_neuron_9_20_exe = NaN(n_neurons,1);
+n_bins_per_neuron_9_20_obs = NaN(n_neurons,1);
+n_bins_per_neuron_9_20_exeobs = NaN(n_neurons,1);
+n_bins_per_neuron_9_20_obs_only = NaN(n_neurons,1);
+for each_neuron = 1:n_neurons
+    n_bins_per_neuron_9_20_exe(each_neuron,1) = length(find(sig_exe(each_neuron,9:20) == 1)); 
+    n_bins_per_neuron_9_20_obs(each_neuron,1) = length(find(sig_obs(each_neuron,9:20) == 1)); 
+    n_bins_per_neuron_9_20_exeobs(each_neuron,1) = length(find(sig_exeobs(each_neuron,9:20) == 1)); 
+    n_bins_per_neuron_9_20_obs_only(each_neuron,1) = length(find(sig_obs_only(each_neuron,9:20) == 1)); 
+end
+n_neurons_at_least_one_bin_9_20_obs = length(find(n_bins_per_neuron_9_20_obs >= 1))
+n_neurons_at_least_one_bin_9_20_exeobs = length(find(n_bins_per_neuron_9_20_exeobs >= 1))
+n_neurons_at_least_one_bin_9_20_obs_only_and_exe_but_no_exeobs = length(find(n_bins_per_neuron_9_20_obs_only >= 1 & n_bins_per_neuron_9_20_exeobs == 0 & n_bins_per_neuron_9_20_exe >= 1))
+n_neurons_at_least_one_bin_9_20_obs_only_and_no_exe = length(find(n_bins_per_neuron_9_20_obs_only >= 1 & n_bins_per_neuron_9_20_exe == 0))
+
+
+%% figure neuron count per bin
+n_sig_exe = sum(sig_exe);
+n_sig_obs = sum(sig_obs);
+n_sig_exeobs = sum(sig_exeobs);
+n_sig_obs_only = sum(sig_obs) - sum(sig_exeobs);
+% save ('n_sig.mat', 'n_sig_exe', 'n_sig_obs',  'n_sig_exeobs', 'n_sig_obs_only')
+
+%% figure
+figure('Units','normalized','OuterPosition',[.1 .1 .09 .2])
 hold on
+h = [];
+x = (1:24)-.5;
+h(1) = plot(x, 100*n_sig_exe/n_neurons,'o','color',color_exe, 'markersize', marker_size, 'MarkerFaceColor', color_exe);
+plot((1:24)-.5,100*n_sig_exe/n_neurons,'-', 'color',color_exe,'linewidth',line_width);
+h(2) = plot(x, 100*n_sig_obs/n_neurons,'o','color',color_obs, 'markersize', marker_size, 'MarkerFaceColor', color_obs);
+plot(x,100*n_sig_obs/n_neurons,'-', 'color',color_obs,'linewidth',line_width);
+h(4) = plot(x, 100*n_sig_obs_only/n_neurons,'o','color',color_obs_only, 'markersize', marker_size, 'MarkerFaceColor', color_obs_only);
+plot(x,100*n_sig_obs_only/n_neurons,'-', 'color',color_obs_only,'linewidth',line_width);
+h(3) = plot(x, 100*n_sig_exeobs/n_neurons,'o','color',color_exeobs, 'markersize', marker_size, 'MarkerFaceColor', color_exeobs);
+plot(x,100*n_sig_exeobs/n_neurons,'-', 'color',color_exeobs,'linewidth',line_width);
 
-[p_matched,p_non,p_obs,p_obsonly] = prepare_for_barplot('discharge');
-keepVars()
-plotkon(p_obsonly, p_obs, p_non,color,1)
-
-[p_matched,p_non,p_obs,p_obsonly] = prepare_for_barplot('action_preference');
-keepVars()
-plotkon(p_obsonly, p_obs, p_non,color,2)
-
-[p_matched,p_non,p_obs,p_obsonly] = prepare_for_barplot('LDA');
-keepVars()
-plotkon(p_obsonly, p_obs, p_non,color,3)
-
-set(gca,'ytick',0:5:60)
+set(gca,'XTick',0:4:25,'XTickLabel',...
+    {'BPR','LED','REL','TCH','HLD','REW','WDR'})
 ylabel('Percentage wrt MNs (%)')
-set(gca,'xtick',1:3,'XTickLabel',{'Dis','Pref', 'LDA'})
-xlim([.5 3.5])
+add_shades
+legend(h,{'Exe' 'Obs' 'Exe & Obs', 'Obs only'}, 'location', 'best')
+set(gca,'ytick',0:20:60)
+ylabel('Percentage wrt MNs (%)')
+ylim([-3 60])
+xlim([-1 24])
 cleanplot
 
-function keepVars()
-clearvars -except p_obs p_obsonly p_non...
-    c color_match color_non color_obsonly color_exeobs
+
+function add_shades()
+onsets = 4:8:24;
+ymin = 0;
+ymax = 60;
+for t = onsets
+    fill([t t t+4 t+4],[ymin ymax ymax ymin],...
+        'k','EdgeColor','none','FaceAlpha',.1)
 end
-
-function plotkon(p_obsonly, p_obs, p_non,...
-    color, k)
-bar(k,p_obs,'FaceColor',color(4,:),'EdgeColor','none')
-bar(k,p_non+p_obsonly,'FaceColor',color(1,:),...
-    'EdgeColor','none')
-bar(k,p_obsonly,'FaceColor',color(2,:),'EdgeColor','none')
-end
-
-
-function [p_matched,p_non,p_obs,p_obsonly] = prepare_for_barplot(type_of_method)
-% load data
-filename_same_or_diff = ['same_or_diff_' type_of_method];
-load(filename_same_or_diff)
-same_diff = same_or_diff; clear same_or_diff
-filename_p_values = 'p_kruskalwallis_per_bin_and_neuron';
-load (filename_p_values)
-sig_exe = data.sig_exe(:,9:20);
-sig_obs = data.sig_obs(:,9:20);
-sig_exeobs = data.sig_exeobs(:,9:20);
-clear data
-obs_only = sig_obs - sig_exe; % only +1 is meaningful: obs only
-% preparation
-n_neurons = size(same_diff,1);
-n_bins = size(same_diff,2);
-n_total_bins = n_neurons * n_bins 
-% count of bins of each type
-n_obs_bins = length(find(sig_obs == 1))
-n_exeobs_bins = length(find(sig_exeobs == 1))
-n_matched_bins = length(find(same_diff == 1))
-n_nonmatched_bins = length(find(same_diff == -1))
-n_obsonly_bins = length(find(obs_only == 1))
-% percentage of bins of each type wrt n_total_bins
-p_matched = n_matched_bins/n_total_bins * 100;
-p_non = n_nonmatched_bins/n_total_bins * 100;
-p_obsonly = n_obsonly_bins/n_total_bins * 100;
-p_obs = (n_matched_bins + n_nonmatched_bins + n_obsonly_bins) / n_total_bins * 100;
 end

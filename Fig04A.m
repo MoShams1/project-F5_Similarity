@@ -18,36 +18,63 @@ obs2obs = obs2obs-100/3;
 exe2obs(:,[1:8,21:24]) = [];
 obs2obs(:,[1:8,21:24]) = [];
 
-%% plot obs2obs vs exe2obs scatter
-c = lines(7);
+c_all = [.5 .5 .5];
+c_sample = [.1 .1 .1];
+alpha_all = .1;
 sz = 20;
-x = obs2obs;
-y = exe2obs;
-
 figure('Units','normalized','OuterPosition',[.1 .1 .09 .18])
-plotit(x(:),y(:),sz*.7,.5,[.5 .5 .5],0)
-h = lsline;
-h.Color = 'k';
+hold on
+
+%% plot obs2obs vs exe2obs scatter
+x = obs2obs(:);
+y = exe2obs(:);
+% plot all data
+draw_edges = 0;
+plotit(x,y,sz*.7,.5,c_all,draw_edges)
 xlabel('Relative o2o performance (%)')
 ylabel('Relative e2o performance (%)')
 set(gca,'XTick',-100:10:100,'YTick',-100:10:100)
-
-axis([-20 50 -30 40])
+axis([-20-3 50 -30-3 40])
 axis square
+% calculate average angles and draw line with that angle that goes through
+% the origin
+slopes = y./x;
+angles = atand(slopes);
+disp(['average angle all = ', num2str(mean(angles)), ' deg'])
+% plot the line indicating the average of all angles
+xline = [-10 40];
+% because of outlier slopes, angle must be calculated first for each dot
+% from the mean angle then, the mean slope can be calculated
+slope_mean = tand(mean(angles));
+yline = xline .* slope_mean;
+plot(xline,yline,'color',c_all-.1,'linewidth',1)
 
-line([-100 100],[-100 100],'color','k','linestyle','--')
-line([0 0],[-100 100],'color','k','linestyle','--')
-line([-100 100],[0 0],'color','k','linestyle','--')
-line([10 10],[-100 100],'color','k','linestyle','--')
+%% exemplary neuron
+x = obs2obs(72,:);
+y = exe2obs(72,:);
+% plot sampel neuron
+draw_edges = 1;
+alpha = 1;
+plotit(x,y,sz,alpha,c_sample,draw_edges)
+% calculate average angles and draw line with that angle that goes through
+% the origin
+slopes = y./x;
+angles = atand(slopes);
+disp(['average agnle sample = ', num2str(mean(angles)), ' deg'])
+% plot the line indicating the average of all angles
+xline = [-10 40];
+% because of outlier slopes, angle must be calculated first for each dot
+% from the mean angle then, the mean slope can be calculated
+slope_mean = tand(mean(angles));
+ylin = xline .* slope_mean;
+plot(xline,ylin,'color',c_sample-.1,'linewidth',1)
 
-%% calculate least square line slope
-hold on
-line(h.XData(:),h.YData(:),'color','k','LineWidth',1)
-slope = (h.YData(2) - h.YData(1)) / (h.XData(2) - h.XData(1));
-display(atand(slope))
- 
-%% add exemplary neurons
-plotit(obs2obs(72,:),exe2obs(72,:),sz,1,'k',1)
+%% add supplementary lines
+line([-100 100],[-100 100],'color','k','linestyle','--')  % unity line
+line([0 0],[-100 100],'color','k','linestyle','-')  % x axis
+line([-100 100],[0 0],'color','k','linestyle','-')  % y axis
+line([10 10],[-100 100],'color','k','linestyle','--')  % threshold line
+
 
 %% functions
 function plotit(A,B,sz,alpha,color,out)

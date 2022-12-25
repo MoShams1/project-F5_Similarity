@@ -14,17 +14,18 @@ hold on
 h(1) = plot_stats(x,m2,c(5,:));
 h(2) = plot_stats(x,boundary,'k');
 h(3) = plot_stats(x,m1,c(7,:));
-ylim([-20 50])
+xlim([4.5 15])
+ylim([-20-5 50])
 xlabel({'o2o threshold wrt', 'chance performance (%)'})
 ylabel("Angle (deg)")
 % legend(h,{'upper peak','boundary','lower peak'}, 'Location','northwest')
-set(gca,'xtick',5:2:15)
+set(gca,'xtick',5:5:15)
 set(gca,'YTick',-20:20:100)
 cleanplot
 
-display(err_count)
-disp(err_count/numel(boundary)*100)
-display(nanmean(boundary(:)))
+disp(['failed fits: ', num2str(err_count)])
+disp(['failed fits: ', num2str(err_count/numel(boundary)*100),'%'])
+disp(['average boundary: ', num2str(nanmean(boundary(:))),'deg'])
 
 
 %% FUNCTIONs
@@ -38,8 +39,8 @@ for icol = 1:size(M,2)
 end
 hold on
 h = plot(x,nanmean(M,1),'-o','markerfacecolor',color,...
-    'markeredgecolor','none','color',color,'linewidth',2,...
+    'markeredgecolor','none','color',color,'linewidth',1,...
     'MarkerSize',4);
-plot(x,up,'Color',color,'linewidth',.7)
-plot(x,lw,'Color',color,'linewidth',.7)
+plot(x,up,'Color',color,'linewidth',.5)
+plot(x,lw,'Color',color,'linewidth',.5)
 end

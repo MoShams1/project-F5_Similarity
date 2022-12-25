@@ -1,6 +1,7 @@
 
 
-function fun_fig05B(type_of_method,count_or_relative,isubplot,legend_flag)
+function fun_fig05B(type_of_method,count_or_relative,...
+    isubplot,legend_flag)
 marker_size = 2;
 plot_linewith = 1;
 % line_color = [0.5 0.5 0.5];
@@ -91,10 +92,6 @@ if strcmp(count_or_relative,'relative')
     cons_time(:,5) = cons_time(:,5) / sum(cons_time(:,5));
 end
 
-% figure
-% figure('Units','normalized','OuterPosition',[.1 .1 .14 .2])
-% subplot(2,1,2)
-
 cons_time = sortrows(cons_time,[3,1]); % sorting: first: duration, second: position of first bin
 x = [];
 for i = 12:-1:1
@@ -107,34 +104,8 @@ for i = 12:-1:1
     x_end = x_start + (i-1);
     x = [x, x_start:x_end];
 end
-if legend_flag
-    subplot(5,1,5)
-    for each_cons = 1:n_cons
-        if cons_time(each_cons,4) > 0 || cons_time(each_cons,5) > 0
-            line([x(each_cons),x(each_cons)], [cons_time(each_cons,1)-1, cons_time(each_cons,2)+0], 'color', color_segment_exist, 'linewidth', 2)
-            hold on
-        else
-            line([x(each_cons),x(each_cons)], [cons_time(each_cons,1)-1, cons_time(each_cons,2)+0], 'color', color_segment_nonexist, 'linewidth', 2)
-            hold on
-        end
-    end
-    % line(get(gca,'xlim'), [0.5 0.5], 'color', line_color)
-    % line(get(gca,'xlim'), [4.5 4.5], 'color', line_color)
-    % line(get(gca,'xlim'), [8.5 8.5], 'color', line_color)
-    % line(get(gca,'xlim'), [12.5 12.5], 'color', line_color)
 
-    xticklabels([])
-    xticks([])
-    xlim([-2 89])
-    yticks(0:4:12)
-    ylim([0 12])
-    ylabel('Action segments')
-    pbaspect([1 .15 1])
-    set(gca,'XColor','none')
-    cleanplot
-end
-
-%% plot data
+% plot histograms
 h = [];
 subplot(5,1,isubplot)
 cnt = 0;
@@ -147,21 +118,36 @@ end
 h(2) = plot(x, cons_time(:,5),'o', 'MarkerEdgeColor', color_nonmatch, 'MarkerFaceColor', color_nonmatch, 'MarkerSize', marker_size);
 hold on
 h(1) = plot(x, cons_time(:,4),'o', 'MarkerEdgeColor', color_match, 'MarkerFaceColor', color_match, 'MarkerSize', marker_size);
-xticklabels([])
-xticks([])
+set(gca,'XColor','none')
 xlim([-2 89])
 if strcmp(count_or_relative,'count')
     yticks(0:10:20)
     ylim([0 25])
+    ylabel('Count')
 else
     yticks(0:.1:.2)
     ylim([0 .2])
+    ylabel('Relativ count')
 end
-% legend(h,{'matched', 'non-matched'},'location','north')
-
-% if strcmp(count_or_relative,'relative')
-%     title('proportion of cases relative to total number of cases with a certain segment')
-% elseif strcmp(count_or_relative,'count')
-%     title('count of MNs with a certain segment')
-% end
 cleanplot
+
+% plot legend
+if legend_flag
+    subplot(5,1,5)
+    for each_cons = 1:n_cons
+        if cons_time(each_cons,4) > 0 || cons_time(each_cons,5) > 0
+            line([x(each_cons),x(each_cons)], [cons_time(each_cons,1)-1, cons_time(each_cons,2)+0], 'color', color_segment_exist, 'linewidth', 2)
+            hold on
+        else
+            line([x(each_cons),x(each_cons)], [cons_time(each_cons,1)-1, cons_time(each_cons,2)+0], 'color', color_segment_nonexist, 'linewidth', 2)
+            hold on
+        end
+    end
+    xlim([-2 89])
+    set(gca,'ytick',(0:4:12),'yTickLabel',{'REL','TCH','HLD','REW'})
+    ylim([0 12])
+    ylabel('Action segments')
+    pbaspect([1 .15 1])
+    set(gca,'XColor','none')
+    cleanplot
+end

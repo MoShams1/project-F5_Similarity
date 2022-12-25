@@ -11,7 +11,15 @@ filename_e2o = 'xx_108_4_single_e2o_perf';
 filename_e2o_sig = 'same_or_diff_LDA'; % 1: e2o sig, -1: e2o n.s. but neuron was tested
 bins_to_consider = 9:20;
 
-boundary_angle = 25.99; % in deg
+boundary_angle = 25.9; % in deg (read from Fig04E command win output)
+
+c = lines(7);
+c_all = [.5 .5 .5];
+c_sample = c(2,:);
+alpha_all = .1;
+sz = 20;
+figure('Units','normalized','OuterPosition',[.1 .1 .09 .18])
+hold on
 
 %% load data
 load (filename_o2o)
@@ -60,38 +68,55 @@ for i = 1:length(idx_e2o_sig)
         angle_below = [angle_below; angle];
     end
 end
-neuron_ID = ceil(bin_ID/n_bins)
-angle_below
+% neuron_ID = ceil(bin_ID/n_bins)
+% angle_below
 
 %% plot obs2obs vs exe2obs scatter
-c = lines(7);
-sz = 20;
+x = all_o2o_vector;
+y = all_e2o_vector;
+% plot all data
+draw_edges = 0;
+plotit(x,y,sz*.7,.5,c_all,draw_edges)
 
-figure('Units','normalized','OuterPosition',[.1 .1 .09 .18])
-plotit(all_o2o_vector,all_e2o_vector,sz*.7,.5,[.5 .5 .5],0)
-h = lsline;
-h.Color = 'k';
 xlabel('Relative o2o performance (%)')
 ylabel('Relative e2o performance (%)')
 set(gca,'XTick',-100:10:100,'YTick',-100:10:100)
-
-axis([-20 50 -30 40])
+axis([-20-3 50 -30-3 40])
 axis square
+boundary_angle = 26;
+disp(['boundary angle = ', num2str(boundary_angle), ' deg'])
+% plot the line indicating the average of all angles
+xline = [-10 40];
+slope_bound = tand(boundary_angle);
+yline = xline .* slope_bound;
+plot(xline,yline,'color',c_all-.1,'linewidth',1)
 
-line([-100 100],[-100 100],'color','k','linestyle','--')
-line([0 0],[-100 100],'color','k','linestyle','--')
-line([-100 100],[0 0],'color','k','linestyle','--')
-line([10 10],[-100 100],'color','k','linestyle','--')
-
-%% calculate least square line slope
-hold on
-line(h.XData(:),h.YData(:),'color','k','LineWidth',1)
-slope = (h.YData(2) - h.YData(1)) / (h.XData(2) - h.XData(1));
-display(atand(slope))
  
 %% add selected bins
-plotit(all_o2o_vector(idx_e2o_sig), all_e2o_vector(idx_e2o_sig),...
-    sz,.8,c(2,:),0)
+x = all_o2o_vector(idx_e2o_sig);
+y = all_e2o_vector(idx_e2o_sig);
+% plot sampel neuron
+draw_edges = 1;
+alpha = 1;
+plotit(x,y,sz,alpha,c_sample,draw_edges)
+% calculate average angles and draw line with that angle that goes through
+% the origin
+slopes = y./x;
+angles = atand(slopes);
+disp(['avg sig bin angle = ', num2str(mean(angles)), ' deg'])
+% plot the line indicating the average of all angles
+xline = [-10 40];
+% because of outlier slopes, angle must be calculated first for each dot
+% from the mean angle then, the mean slope can be calculated
+slope_mean = tand(mean(angles));
+yline = xline .* slope_mean;
+plot(xline,yline,'color',c_sample,'linewidth',1,'linestyle','-')
+
+%% add supplementary lines
+line([-100 100],[-100 100],'color','k','linestyle','--')  % unity line
+line([0 0],[-100 100],'color','k','linestyle','-')  % x axis
+line([-100 100],[0 0],'color','k','linestyle','-')  % y axis
+line([10 10],[-100 100],'color','k','linestyle','--')  % threshold line
 
 %% functions
 function plotit(A,B,sz,alpha,color,out)

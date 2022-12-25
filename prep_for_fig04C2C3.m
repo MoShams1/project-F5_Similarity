@@ -3,6 +3,7 @@
 %% calculate the mean angle of the right most cluster
 
 cmap = parula(11+1);
+cmap = cmap .* repmat([.9 .8 .9],size(cmap,1),1);
 ic = 0;
 
 for thresh = 5:15
@@ -15,7 +16,7 @@ for thresh = 5:15
     y = y(ind_min_rel);
     
     % convert to angle
-    angle = atand(y./x);   
+    angle = atand(y./x);
     
     n = sum(~isnan(angle));
     nbins = round(sqrt(length(angle)));
@@ -24,54 +25,54 @@ for thresh = 5:15
     edges = mean(edges([1 2])):binsize:edges(end);
     
     % Set up fittype and options.
-    ft = fittype( 'gauss1' );
+    ft = fittype( 'gauss2' );
     
     opts = fitoptions( 'Method', 'NonlinearLeastSquares' );
     
     % Fit model to data.
     [fitresult, gof] = fit( edges', count', ft, opts);
-    adjR2(ic+1) = gof.adjrsquare;
+    adjR2(ic+1) = gof.adjrsquare;    
     
     xx = -90:.1:90;
     yy = feval(fitresult,xx);
     
     % Set up fittype and options.
     ft = 'linearinterp'; 
-    [fitresult, gof] = fit( edges', count', ft, 'Normalize', 'on' );
-    yy_true = feval(fitresult,xx);
+    [fitresult2, gof] = fit( edges', count', ft, 'Normalize', 'on' );
+    yy_true = feval(fitresult2,xx);
     yy_true(yy_true<0) = 0;
     
     res = yy_true - yy;
     
     ic = ic+1;
     
-    subplot(3,2,3)
+    subplot(3,2,4)
     hold on
-    plot(xx,yy,'color',cmap(ic,:),'linewidth',1.5)
+    plot(xx,yy,'color',cmap(ic,:),'linewidth',1)
 
     if thresh == 15
-        ylim([0 70])
-        xlim([-90 90])
+        ylim([0-2 70])
+        xlim([-90-5 90])
         set(gca,'xtick',-90:45:90)
+        set(gca,'YTick',0:20:100)
 %         legend th=5 th=6 th=7 th=8 th=9 th=10 th=11 th=12 th=13 th=14 th=15 location northwest
-        xlabel('Angle (deg)')
+%         xlabel('Angle (deg)')
         ylabel('Bin count')
+        pbaspect([1 .8 1])
         cleanplot
     end
     
-    subplot(3,2,5)
+    subplot(3,2,6)
     hold on
-    plot(xx,res,'color',cmap(ic,:),'linewidth',1.5)
+    plot(xx,res,'color',cmap(ic,:),'linewidth',1)
     if thresh == 15
-        ylim([-20 40])
-        xlim([-90 90])
+        ylim([-20-2 40])
+        xlim([-90-5 90])
         set(gca,'xtick',-90:45:90)
+        set(gca,'YTick',-100:20:100)
         xlabel('Angle (deg)')
-        ylabel('Residuals')
+        ylabel('Residuals (count)')
         pbaspect([1 .5 1])
         cleanplot
     end
 end
-
-display(mean(adjR2))
-
