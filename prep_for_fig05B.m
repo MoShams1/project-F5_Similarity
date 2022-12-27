@@ -107,7 +107,7 @@ end
 
 % plot histograms
 h = [];
-subplot(5,1,isubplot)
+subplot(3,1,isubplot)
 cnt = 0;
 for i=12:-1:1
     plot(x(cnt+1:cnt+i), cons_time(cnt+1:cnt+i,5),'-', 'color', color_nonmatch,'linewidth',plot_linewith)
@@ -133,7 +133,7 @@ cleanplot
 
 % plot legend
 if legend_flag
-    subplot(5,1,5)
+    subplot(3,1,3)
     for each_cons = 1:n_cons
         if cons_time(each_cons,4) > 0 || cons_time(each_cons,5) > 0
             line([x(each_cons),x(each_cons)], [cons_time(each_cons,1)-1, cons_time(each_cons,2)+0], 'color', color_segment_exist, 'linewidth', 2)

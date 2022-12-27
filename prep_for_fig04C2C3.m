@@ -57,7 +57,7 @@ for thresh = 5:15
         set(gca,'YTick',0:20:100)
 %         legend th=5 th=6 th=7 th=8 th=9 th=10 th=11 th=12 th=13 th=14 th=15 location northwest
 %         xlabel('Angle (deg)')
-        ylabel('Bin count')
+%         ylabel('Bin count')
         pbaspect([1 .8 1])
         cleanplot
     end
@@ -71,7 +71,7 @@ for thresh = 5:15
         set(gca,'xtick',-90:45:90)
         set(gca,'YTick',-100:20:100)
         xlabel('Angle (deg)')
-        ylabel('Residuals (count)')
+%         ylabel('Residuals (count)')
         pbaspect([1 .5 1])
         cleanplot
     end

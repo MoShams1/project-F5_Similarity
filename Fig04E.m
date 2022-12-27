@@ -4,7 +4,7 @@ clc
 clear
 close all
 
-load stat_for_fig04J.mat
+load stat_for_fig04E.mat
 
 %% PLOT
 c = lines(7);

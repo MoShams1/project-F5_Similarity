@@ -7,9 +7,9 @@ close all
 monkey = '1';
 
 % select a neuron ID
-ID = '2015_02_10_S2_T4';  % elife 2nd submission (Fig2A)
+% ID = '2015_02_10_S2_T4';  % elife 2nd submission (Fig2A)
 % ID = '2014_07_09_S1_T4';  % elife 2nd submission (Fig2B)
-% ID = '2014_06_13_S2_T4';  % elife 2nd submission (Fig2C)
+ID = '2014_06_13_S2_T4';  % elife 2nd submission (Fig2C)
 
 % ID = '2014_08_30_S2_T4';
 % ID = '2014_06_15_S2_T4';

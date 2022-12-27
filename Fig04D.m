@@ -4,13 +4,13 @@ clc
 clear
 close all
 
-load stat_for_fig04I.mat
+load stat_for_fig04D.mat
 
 %%
 figure('Units','normalized','OuterPosition',[.1 .1 .06 .13])
 hold on
 plot_stats(thresholds,adjr2,'k');
-ylabel('Adjusted R^2')
+ylabel('Adj R^2')
 xlabel({'o2o threshold wrt', 'chance performance (%)'})
 % title('Two-Gaussian fit evaluation')
 set(gca,'YTick',0:.5:1)

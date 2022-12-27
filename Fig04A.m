@@ -3,6 +3,7 @@ clc
 clear
 close all
 
+sample_neuron = 68; % 72
 
 load xx_108_4_single_e2o_perf
 exe2obs_cell = cellfun(@mean, test,'UniformOutput',false);
@@ -50,8 +51,8 @@ yline = xline .* slope_mean;
 plot(xline,yline,'color',c_all-.1,'linewidth',1)
 
 %% exemplary neuron
-x = obs2obs(72,:);
-y = exe2obs(72,:);
+x = obs2obs(sample_neuron,:);
+y = exe2obs(sample_neuron,:);
 % plot sampel neuron
 draw_edges = 1;
 alpha = 1;

@@ -136,7 +136,7 @@ ymax = .3;
 ylim([-ymax/10/2 ymax])
 xlim([-1 12])
 add_shades(ymax)
-ylabel('Relative frequency')
+ylabel('Relative count')
 xlabel('Starting bin')
 cleanplot
 
@@ -153,12 +153,12 @@ plot(xx, h2,'-o', 'color', color_nonmatch,'MarkerEdgeColor',...
     'MarkerSize', marker_size,'linewidth',line_width);
 axis([0 n_bins+1, get(gca,'ylim')])
 set(gca,'xtick',(0:4:12),'XTicklabel',{'REL','TCH','HLD','REW'})
-yticks(0:.2:.8)
+yticks(0:.4:.8)
 ymax = .8;
 ylim([-ymax/10/2 ymax])
 xlim([-1 12])
 add_shades(ymax)
-ylabel('Relative frequency')
+ylabel('Relative count')
 xlabel('Duration (bins)')
 cleanplot
 end

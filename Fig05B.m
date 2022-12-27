@@ -4,24 +4,14 @@ clc
 clear
 close all
 
-figure('Units','normalized','OuterPosition',[.1 .1 .13 .4])
+figure('Units','normalized','OuterPosition',[.1 .1 .13 .25])
 
 isubplot = 1;
-plotlegend = 0;
-prep_for_fig05B('action_preference','count',...
-    isubplot,plotlegend)
-
-isubplot = 2;
 plotlegend = 0;
 prep_for_fig05B('action_preference','relative',...
     isubplot,plotlegend)
 
-isubplot = 3;
-plotlegend = 0;
-prep_for_fig05B('LDA','count',...
-    isubplot,plotlegend)
-
-isubplot = 4;
+isubplot = 2;
 plotlegend = 1;
 prep_for_fig05B('LDA','relative',...
     isubplot,plotlegend)

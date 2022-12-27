@@ -89,7 +89,7 @@ disp(['boundary angle = ', num2str(boundary_angle), ' deg'])
 xline = [-10 40];
 slope_bound = tand(boundary_angle);
 yline = xline .* slope_bound;
-plot(xline,yline,'color',c_all-.1,'linewidth',1)
+plot(xline,yline,'color','k','linewidth',1)
 
  
 %% add selected bins

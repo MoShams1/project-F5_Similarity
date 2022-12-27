@@ -9,7 +9,7 @@ load x108_rel_timecourse_M1M2
 c = lines(7);
 cmap = [c(7,:);c(1,:);c(5,:)];
 sz = 3;
-neuron = 68;  % 68, 28, 12
+neuron = 12;  % 68, 28, 12
 
 figure('Units','normalized','OuterPosition',[.1 .1 .08 .2])
 % execution

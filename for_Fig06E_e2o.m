@@ -3,17 +3,10 @@ clc
 clear
 close all
 
-load same_or_diff_LDA.mat
-% find neurons with only matched bins
-   % find neurons with matched bins
-ind_matched_bins = same_or_diff == 1;
-ind_matched_neurons = any(ind_matched_bins,2);
-   % find neurons with nonmatched bins
-ind_nonmatched_bins = same_or_diff == -1;
-ind_nonmatched_neurons = any(ind_nonmatched_bins,2);
-   % find find neurons with any matched bins but no nonmatched bins
-ind_neurons = ind_matched_neurons & ~(ind_nonmatched_neurons);
-
+load same_or_diff_LDA_24bins.mat
+% find neurons with at least one matched bin
+ind_bins = same_or_diff==1;
+ind_neurons = ind_bins;
 
 load x100_M1
 FR_twist_M1 = FR_twist;
@@ -29,8 +22,8 @@ IDs_match_crit = [IDs_match_crit_M1; IDs_match_crit];
 
 clear FR_twist_M1 FR_shift_M1 FR_lift_M1 IDs_match_crit_M1
 
-nneurons = sum(ind_neurons);
-rows_neuron = find(ind_neurons);
+nneurons = size(ind_neurons,1);
+rows_neuron = 1:nneurons;
 
 %% average over trials and segments
 
@@ -86,7 +79,7 @@ parfor irep = 1:nreps
     [verif(irep,:),test(irep,:)] = ...
         run_class(twist_exe,shift_exe,lift_exe,...
         twist_obs,shift_obs,lift_obs,...
-        ntrial,labels_train,labels_test);
+        ntrial,labels_train,labels_test,ind_neurons);
     
 end
 
@@ -97,7 +90,7 @@ perf.test = test;
 %% save results
 
 % save the performance matrix
-save('for_fig06D_exe2obs.mat', 'perf');
+save('for_fig06E_exe2obs.mat', 'perf');
 
 
 %% FUNCTIONS
@@ -152,7 +145,7 @@ end
 function [verif,test] = ...
     run_class(twist_exe,shift_exe,lift_exe,...
     twist_obs,shift_obs,lift_obs,...
-    ntrial,labels_train,labels_test)
+    ntrial,labels_train,labels_test,ind_neurons)
 
 nneurons = size(twist_exe,1);
 
@@ -197,27 +190,29 @@ for in = 1:nneurons
 
 end
 
-% concatenate manipulations vertically
+% concatenate manipulations vertically (rep x neuron x bin)
 mat_exe = [mat_twist_exe; mat_shift_exe; mat_lift_exe];
 mat_obs = [mat_twist_obs; mat_shift_obs; mat_lift_obs];
 
-
-
 nallbins = size(mat_obs,3);
 for ibin = 1:nallbins
+    ind_n = ind_neurons(:,ibin);
+    if sum(ind_n) > 0
+        % true labels
+        % train and test with the exe trials (verify the model)
+        verif(1,ibin)...
+            = cross_validate(mat_exe(:,ind_n,ibin),labels_train);
 
-    % true labels
-    % train and test with the exe trials (verify the model)
-    verif(1,ibin)...
-        = cross_validate(mat_exe(:,:,ibin),labels_train);
-
-    % train with exe trials and test with obs trails (test the model)
-    test(1,ibin)...
-        = classify(mat_exe(:,:,ibin),labels_train,...
-        mat_obs(:,:,ibin),labels_test);
+        % train with exe trials and test with obs trails (test the model)
+        test(1,ibin)...
+            = classify(mat_exe(:,ind_n,ibin),labels_train,...
+            mat_obs(:,ind_n,ibin),labels_test);
+    else
+        verif(1,ibin) = nan;
+        test(1,ibin) = nan;
+    end
 
 end
-
 end
 
 

@@ -47,7 +47,7 @@ set(gca,'xtick',-90:45:90)
 xlim([-90-5 90])
 ylim([-2 40])
 % xlabel('Angle (deg)')
-ylabel('Bin count')
+% ylabel('Bin count')
 
 % find the local minimum
 [pp,ipp] = findpeaks(yy);

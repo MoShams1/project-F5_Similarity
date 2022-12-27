@@ -1,95 +1,88 @@
 
 
+clc
 clear
 close all
 
+stat_for_fig06
+% keep n6c n6d n6e n6f
 
+figure('Units','normalized','OuterPosition',[.1 .1 .15 .7])
+
+subplot(4,2,2)
 load xx_109_7_pop_exe2obs
-% load for_fig06C_exe2obs
-% load for_fig06D_exe2obs
-exe2obs_verif_exe = perf.verif;
-exe2obs_test_obs = perf.test;
-
+e2e = perf.verif;
+e2o = perf.test;
 load xx_109_7_pop_obs2exe
-% load for_fig06C_obs2exe
-% load for_fig06D_obs2exe
-obs2exe_verif_obs = perf.verif;
-obs2exe_test_exe = perf.test;
+o2o = perf.verif;
+o2e = perf.test;
+prep_for_fig06B(e2e,e2o,o2o,o2e,177)
+
+subplot(4,2,3)
+load for_fig06C_exe2obs
+e2e = perf.verif;
+e2o = perf.test;
+load for_fig06C_obs2exe
+o2o = perf.verif;
+o2e = perf.test;
+prep_for_fig06B(e2e,e2o,o2o,o2e,n6c)
+
+subplot(4,2,4)
+load for_fig06D_exe2obs
+e2e = perf.verif;
+e2o = perf.test;
+load for_fig06D_obs2exe
+o2o = perf.verif;
+o2e = perf.test;
+prep_for_fig06B(e2e,e2o,o2o,o2e,n6d)
+
+subplot(4,2,5)
+plot_n(n6e)
+
+subplot(4,2,6)
+plot_n(n6f)
 
 
-%% plot 3 lines
+subplot(4,2,7)
+load for_fig06E_exe2obs
+e2e = perf.verif;
+e2o = perf.test;
+load for_fig06E_obs2exe
+o2o = perf.verif;
+o2e = perf.test;
+prep_for_fig06B(e2e,e2o,o2o,o2e,[])
 
-color = lines(7);
-
-figure('units','normalized','outerposition',[.2 .2 .4 .4])
-hold on
-
-plotCI(exe2obs_verif_exe,color(1,:),2);
-plotCI(obs2exe_verif_obs,color(5,:),2);
-plotCI(obs2exe_test_exe,color(3,:),2);
-plotCI(exe2obs_test_obs,color(7,:),2);
-
-plot([0 25],[100/3 100/3],'k-')
-
-events = {'Prs','LED','Rel',...
-    'Tch','Hld','Rew','Wdr'};
-set(gca,'xtick',(1:4:25)-.5,'xticklabel',events)
-
-ylabel('classifier perf. (%)')
-
-axis([0 25 0 100])
-pbaspect([.7 1 1])
-% cleanplot
+subplot(4,2,8)
+load for_fig06F_exe2obs
+e2e = perf.verif;
+e2o = perf.test;
+load for_fig06F_obs2exe
+o2o = perf.verif;
+o2e = perf.test;
+prep_for_fig06B(e2e,e2o,o2o,o2e,[])
 
 
-%% plot filled area
-
-
-figure('units','normalized','outerposition',[.2 .2 .4 .4])
-hold on
-
-plotCI2(exe2obs_verif_exe,color(1,:),2);
-plotCI2(obs2exe_verif_obs,color(5,:),2);
-plotCI2(obs2exe_test_exe,color(3,:),2);
-plotCI2(exe2obs_test_obs,color(7,:),2);
-
-plot([0 25],[100/3 100/3],'k-')
-
-events = {'Prs','LED','Rel',...
-    'Tch','Hld','Rew','Wdr'};
-set(gca,'xtick',(1:4:25)-.5,'xticklabel',events)
-
-ylabel('classifier perf. (%)')
-
-axis([0 25 0 100])
-pbaspect([.7 1 1])
-% cleanplot
-
-
-
-%% FUNCTIONS
-function plotCI(M,color,linewidth)
-
-mean_M = mean(M,1);
-CI_upper = prctile(M,95,1);
-CI_lower = prctile(M,5,1);
-
-plot(mean_M,'color',color,'linewidth',linewidth);
-plot(CI_upper,'color',color,'linewidth',linewidth/2);
-plot(CI_lower,'color',color,'linewidth',linewidth/2);
-
+function plot_n(N)
+bar(N,'facecolor','k','EdgeColor','w')
+set(gca,'XColor','none')
+ylabel Count
+yticks(0:10:50)
+ylim([0 25])
+xlim([-1 25])
+pbaspect([1 .3 1])
+add_shades_bar
+cleanplot
 end
 
 
-function plotCI2(M,color,linewidth)
-
-alpha = .1;
-mean_M = mean(M,1);
-CI_upper = prctile(M,95,1);
-CI_lower = prctile(M,5,1);
-
-fill([1:24,24:-1:1],[CI_lower,fliplr(CI_upper)],color,...
-    'FaceAlpha',alpha,'EdgeColor','none')
-plot(mean_M,'color',color,'linewidth',linewidth);
-
+function add_shades_bar
+hold on
+onsets = (4:8:20)+.5;
+yrange = ylim;
+ymin = yrange(1);
+ymax = yrange(2);
+for t = onsets
+    fill([t t t+4 t+4],[ymin ymax ymax ymin],...
+        'k','EdgeColor','none','FaceAlpha',.1)
+end
 end
