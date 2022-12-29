@@ -9,6 +9,9 @@ stat_for_fig06
 
 figure('Units','normalized','OuterPosition',[.1 .1 .15 .7])
 
+subplot(4,2,1)
+prep_for_fig06A
+
 subplot(4,2,2)
 load xx_109_7_pop_exe2obs
 e2e = perf.verif;
@@ -16,7 +19,7 @@ e2o = perf.test;
 load xx_109_7_pop_obs2exe
 o2o = perf.verif;
 o2e = perf.test;
-prep_for_fig06B(e2e,e2o,o2o,o2e,177)
+prep_for_fig06BCDEF(e2e,e2o,o2o,o2e,177)
 
 subplot(4,2,3)
 load for_fig06C_exe2obs
@@ -25,7 +28,7 @@ e2o = perf.test;
 load for_fig06C_obs2exe
 o2o = perf.verif;
 o2e = perf.test;
-prep_for_fig06B(e2e,e2o,o2o,o2e,n6c)
+prep_for_fig06BCDEF(e2e,e2o,o2o,o2e,n6c)
 
 subplot(4,2,4)
 load for_fig06D_exe2obs
@@ -34,9 +37,9 @@ e2o = perf.test;
 load for_fig06D_obs2exe
 o2o = perf.verif;
 o2e = perf.test;
-prep_for_fig06B(e2e,e2o,o2o,o2e,n6d)
+prep_for_fig06BCDEF(e2e,e2o,o2o,o2e,n6d)
 
-subplot(4,2,5)
+subplot(4,2,5);
 plot_n(n6e)
 
 subplot(4,2,6)
@@ -50,7 +53,7 @@ e2o = perf.test;
 load for_fig06E_obs2exe
 o2o = perf.verif;
 o2e = perf.test;
-prep_for_fig06B(e2e,e2o,o2o,o2e,[])
+prep_for_fig06BCDEF(e2e,e2o,o2o,o2e,[])
 
 subplot(4,2,8)
 load for_fig06F_exe2obs
@@ -59,7 +62,7 @@ e2o = perf.test;
 load for_fig06F_obs2exe
 o2o = perf.verif;
 o2e = perf.test;
-prep_for_fig06B(e2e,e2o,o2o,o2e,[])
+prep_for_fig06BCDEF(e2e,e2o,o2o,o2e,[])
 
 
 function plot_n(N)

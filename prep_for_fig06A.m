@@ -1,23 +1,14 @@
-clear
-close all
-clc
 
-alpha_level = 0.05;
-
-load xx_108_4_single_e2e_perf
-e2e = cell2mat(cellfun(@mean,verif,'UniformOutput',false));
-load xx_108_4_single_e2o_perf
-e2o = cell2mat(cellfun(@mean,test,'UniformOutput',false));
-load xx_108_4_single_o2o_perf
-o2o = cell2mat(cellfun(@mean,verif,'UniformOutput',false));
-load xx_108_4_single_o2e_perf
-o2e = cell2mat(cellfun(@mean,test,'UniformOutput',false));
+load xx_108_4_single_e2o_perf_withoutBootstrap.mat
+e2e = cell2mat(verif);
+e2o = cell2mat(test);
+load xx_108_4_single_o2e_perf_withoutBootstrap.mat
+o2o = cell2mat(verif);
+o2e = cell2mat(test);
 
 %% figure
-c = lines(7);
-figure('units','normalized','outerposition',[.1 .1 .1 .25])
 hold on
-
+c = lines(7);
 x = 1:24;
 crop = 0;
 mrk = 1;  % add marker

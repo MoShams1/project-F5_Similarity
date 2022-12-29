@@ -1,6 +1,6 @@
 
 
-function prep_for_fig06B(e2e,e2o,o2o,o2e,N)
+function prep_for_fig06BCDEF(e2e,e2o,o2o,o2e,N)
 
 color = lines(7);
 hold on
